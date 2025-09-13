@@ -26,5 +26,12 @@ public class User {
     private String name;
 
     @Column(name = "birthDate")
-    private String birthDate;
+    private LocalDate birthDate;
+
+    public User(String email, String name, LocalDate birthDate) {
+        this.name = name;
+        this.email = email;
+        this.birthDate = birthDate;
+    }
+
 }

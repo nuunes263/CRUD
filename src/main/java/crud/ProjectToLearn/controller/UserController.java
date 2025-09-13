@@ -3,6 +3,7 @@ package crud.ProjectToLearn.controller;
 import crud.ProjectToLearn.application.User.UserDto;
 import crud.ProjectToLearn.application.User.UserService;
 import crud.ProjectToLearn.domain.entity.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +20,13 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<Void> saveUser(@RequestBody UserDto userDto){
+    public ResponseEntity<Void> saveUser(@RequestBody @Valid UserDto userDto){
         userService.saveUser(userDto);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public List<User> findAllUser(){
+    public List<UserDto> findAllUser(){
         return userService.findAllUser();
     }
 

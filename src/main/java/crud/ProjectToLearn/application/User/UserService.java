@@ -14,10 +14,11 @@ public class UserService implements IUserService{
     private UserRepository repository;
 
     public void saveUser(UserDto userDto) {
-        User userNew = new User();
-        userNew.setName(userDto.name());
-        userNew.setEmail(userDto.email());
-        userNew.setBirthDate(userDto.birthDate());
+        User userNew = new User(
+                userDto.name(),
+                userDto.email(),
+                userDto.birthDate());
+
         repository.save(userNew);
     }
 
@@ -43,7 +44,10 @@ public class UserService implements IUserService{
         repository.saveAndFlush(userUpdated);
     }
 
-    public List<User> findAllUser() {
-        return repository.findAll();
+    public List<UserDto> findAllUser() {
+        return repository.findAll()
+                .stream()
+                .map(user -> new UserDto(user.getEmail(), user.getName(), user.getBirthDate()))
+                .toList();
     }
 }
