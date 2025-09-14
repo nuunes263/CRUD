@@ -1,6 +1,5 @@
 package crud.ProjectToLearn.infrastructure.repository;
 
-import crud.ProjectToLearn.application.User.UserDto;
 import crud.ProjectToLearn.domain.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;

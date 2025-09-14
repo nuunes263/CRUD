@@ -15,8 +15,8 @@ public class UserService implements IUserService{
 
     public void saveUser(UserDto userDto) {
         User userNew = new User(
-                userDto.name(),
                 userDto.email(),
+                userDto.name(),
                 userDto.birthDate());
 
         repository.save(userNew);
@@ -42,12 +42,5 @@ public class UserService implements IUserService{
                 .build();
 
         repository.saveAndFlush(userUpdated);
-    }
-
-    public List<UserDto> findAllUser() {
-        return repository.findAll()
-                .stream()
-                .map(user -> new UserDto(user.getEmail(), user.getName(), user.getBirthDate()))
-                .toList();
     }
 }

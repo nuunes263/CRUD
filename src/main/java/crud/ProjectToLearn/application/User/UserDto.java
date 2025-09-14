@@ -1,5 +1,6 @@
 package crud.ProjectToLearn.application.User;
 
+import crud.ProjectToLearn.domain.entity.User;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
@@ -17,4 +18,7 @@ public record UserDto(
         @Past(message = "A data de nascimento deve ser no passado")
         LocalDate birthDate)
 {
+    public UserDto(User user){
+        this(user.getEmail(), user.getName(), user.getBirthDate());
+    }
 }
