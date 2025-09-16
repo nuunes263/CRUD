@@ -1,12 +1,16 @@
 package crud.ProjectToLearn.domain.entity;
 
+import crud.ProjectToLearn.application.User.Dto.UserRequest;
+import crud.ProjectToLearn.domain.enums.Plan;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.Builder;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 
-@Entity
+@Entity(name = "user")
 @Table(name = "users")
 @Getter
 @Setter
@@ -18,21 +22,26 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long  id;
 
-    @Column(name = "email", unique = true)
+    @Column(unique = true)
     public String email;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "birthDate")
     private LocalDate birthDate;
+    private String phone;
 
-    public User(String email, String name, LocalDate birthDate) {
-        this.name = name;
-        this.email = email;
-        this.birthDate = birthDate;
+    @CPF
+    private String cpf;
+
+    @Enumerated(EnumType.STRING)
+    private Plan plan;
+
+    public User(UserRequest userRequest) {
+        this.name = userRequest.name();
+        this.email = userRequest.email();
+        this.birthDate = userRequest.birthDate();
+        this.phone = userRequest.phone();
+        this.cpf = userRequest.cpf();
+        this.plan = userRequest.plan();
     }
-
 }

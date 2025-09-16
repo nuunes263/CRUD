@@ -1,44 +1,54 @@
 package crud.ProjectToLearn.application.User;
 
+import crud.ProjectToLearn.application.Helper.UserMapper;
+import crud.ProjectToLearn.application.User.Dto.UserRequest;
+import crud.ProjectToLearn.application.User.Dto.UserRequestUpdated;
 import crud.ProjectToLearn.domain.entity.User;
 import crud.ProjectToLearn.infrastructure.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService implements IUserService{
+public class UserService{
 
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
+    private final UserMapper mapper;
 
-    public void saveUser(UserDto userDto) {
-        User userNew = new User(
-                userDto.email(),
-                userDto.name(),
-                userDto.birthDate());
-
-        repository.save(userNew);
+    public UserService(UserRepository repository, UserMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
     }
 
-    public User getUserByEmail(String email) {
-        return repository.findByEmail(email).orElseThrow(
-                () -> new RuntimeException("Email não encontrado")
+    public User saveUser(UserRequest userRequest) {
+        var userNew = new User(userRequest);
+        repository.save(userNew);
+
+        return userNew;
+    }
+
+    public Page<User> findAllUser(Pageable pagination){
+        return repository.findAll(pagination);
+    }
+
+    public User getUserById(Long id) {
+        return repository.findById(id).orElseThrow(
+                () -> new RuntimeException("Usuário não encontrado")
         );
     }
 
-    public void deleteByEmail(String email) {
-        repository.deleteByEmail(email);
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 
-    public void updateUser(UserDto userDto) {
-        User userEntity = getUserByEmail(userDto.email());
-        User userUpdated = User.builder()
-                .id(userEntity.getId())
-                .email(userDto.email() != null ? userDto.email() : userEntity.getEmail())
-                .name(userDto.name() != null ? userDto.name() : userEntity.getName())
-                .birthDate(userDto.birthDate() != null ? userDto.birthDate() : userEntity.getBirthDate())
-                .build();
+    public User updateUser(Long id, UserRequestUpdated userRequestUpdated) {
+        var userEntity = getUserById(id);
 
-        repository.saveAndFlush(userUpdated);
+        mapper.updateUserFromDto(userRequestUpdated, userEntity);
+        repository.saveAndFlush(userEntity);
+
+        return userEntity;
     }
 }

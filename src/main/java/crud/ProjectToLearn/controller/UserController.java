@@ -1,9 +1,10 @@
 package crud.ProjectToLearn.controller;
 
-import crud.ProjectToLearn.application.User.UserDto;
+import crud.ProjectToLearn.application.User.Dto.UserRequest;
+import crud.ProjectToLearn.application.User.Dto.UserRequestUpdated;
 import crud.ProjectToLearn.application.User.UserService;
 import crud.ProjectToLearn.domain.entity.User;
-import crud.ProjectToLearn.infrastructure.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,41 +12,43 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository repository;
 
+    @Transactional
     @PostMapping
-    public ResponseEntity<Void> saveUser(@RequestBody @Valid UserDto userDto){
-        userService.saveUser(userDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity saveUser(@RequestBody @Valid UserRequest userRequest, UriComponentsBuilder uriComponentsBuilder){
+        var user = userService.saveUser(userRequest);
+        var uri = uriComponentsBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(new UserRequest(user));
     }
 
     @GetMapping
-    public Page<UserDto> findAllUser(@PageableDefault(size = 10, sort = {"name"}) Pageable paginacao){
-        return repository.findAll(paginacao)
-                .map(UserDto::new);
+    public ResponseEntity<Page<User>> findAllUser(@PageableDefault(size = 10, sort = {"name"}) Pageable pagination){
+        return ResponseEntity.ok(userService.findAllUser(pagination));
     }
 
-    @GetMapping("/by-email")
-    public ResponseEntity<User> findByEmail(@RequestParam String email){
-        return ResponseEntity.ok(userService.getUserByEmail(email));
+    @GetMapping("/{id}")
+    public ResponseEntity<User> findById(@PathVariable Long id){
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteUserByEmail(@RequestBody String email){
-        userService.deleteByEmail(email);
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteUserByEmail(@PathVariable Long id){
+        userService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
-    public ResponseEntity<Void> updateUser(@RequestBody UserDto userDto){
-        userService.updateUser(userDto);
-        return ResponseEntity.ok().build();
+    @Transactional
+    @PutMapping("/{id}")
+    public ResponseEntity updateUser(@PathVariable Long id, @RequestBody UserRequestUpdated userRequestUpdated){
+        return ResponseEntity.ok(userService.updateUser(id, userRequestUpdated));
     }
 }
