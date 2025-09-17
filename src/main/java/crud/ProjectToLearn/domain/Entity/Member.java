@@ -31,12 +31,12 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Plan plan;
 
-    public Member(MemberRequest MemberRequest) {
-        this.name = MemberRequest.name();
-        this.email = MemberRequest.email();
-        this.birthDate = MemberRequest.birthDate();
-        this.phone = MemberRequest.phone();
-        this.cpf = MemberRequest.cpf();
-        this.plan = MemberRequest.plan();
+    public Member(MemberRequest memberRequest) {
+        this.name = memberRequest.name();
+        this.email = memberRequest.email();
+        this.birthDate = memberRequest.birthDate();
+        this.phone = memberRequest.phone();
+        this.cpf = memberRequest.cpf();
+        this.plan = memberRequest.plan();
     }
 }
