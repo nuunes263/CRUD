@@ -1,4 +1,4 @@
-package crud.ProjectToLearn.domain.enums;
+package crud.ProjectToLearn.domain.Enums;
 
 public enum Plan {
     MONTHLY,

@@ -1,4 +1,4 @@
-package crud.ProjectToLearn.domain.entity;
+package crud.ProjectToLearn.domain.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
