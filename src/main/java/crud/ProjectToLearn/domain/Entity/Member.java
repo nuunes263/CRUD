@@ -1,6 +1,6 @@
 package crud.ProjectToLearn.domain.Entity;
 
-import crud.ProjectToLearn.application.Member.Dto.MemberRequest;
+import crud.ProjectToLearn.application.Member.Command.Dto.MemberRequest;
 import crud.ProjectToLearn.domain.Enums.Plan;
 import jakarta.persistence.*;
 import lombok.*;

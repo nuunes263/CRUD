@@ -21,7 +21,6 @@ public class HandleException {
         return ResponseEntity.badRequest().body(errors.stream().map(DataErrorValidation::new).toList());
     }
 
-
     public record DataErrorValidation(String field, String message){
         public DataErrorValidation(FieldError error){
             this(error.getField(), error.getDefaultMessage());

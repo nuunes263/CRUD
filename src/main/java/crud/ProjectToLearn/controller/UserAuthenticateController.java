@@ -1,6 +1,9 @@
 package crud.ProjectToLearn.controller;
 
 import crud.ProjectToLearn.application.User.Dto.UserAuthenticateData;
+import crud.ProjectToLearn.domain.Entity.User;
+import crud.ProjectToLearn.infrastructure.security.Dto.DataTokenJWT;
+import crud.ProjectToLearn.infrastructure.security.TokenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserAuthenticateController {
 
     private final AuthenticationManager manager;
+    private final TokenService tokenService;
 
     @PostMapping
     public ResponseEntity login(@RequestBody @Valid UserAuthenticateData data){
-        var token = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        var authentication = manager.authenticate(token);
+        var authenticationToken = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+        var authentication = manager.authenticate(authenticationToken);
 
-        return ResponseEntity.ok().build();
+        var tokenJWT = tokenService.generateToken((User) authentication.getPrincipal());
+
+        return ResponseEntity.ok(new DataTokenJWT(tokenJWT));
     }
 }

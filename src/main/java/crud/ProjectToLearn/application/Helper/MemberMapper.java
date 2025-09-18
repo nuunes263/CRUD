@@ -1,6 +1,6 @@
 package crud.ProjectToLearn.application.Helper;
 
-import crud.ProjectToLearn.application.Member.Dto.MemberRequestUpdated;
+import crud.ProjectToLearn.application.Member.Command.Dto.MemberRequestUpdated;
 import crud.ProjectToLearn.domain.Entity.Member;
 import org.mapstruct.*;
 

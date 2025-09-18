@@ -1,8 +1,9 @@
 package crud.ProjectToLearn.controller;
 
-import crud.ProjectToLearn.application.Member.Dto.MemberRequest;
-import crud.ProjectToLearn.application.Member.Dto.MemberRequestUpdated;
-import crud.ProjectToLearn.application.Member.MemberService;
+import crud.ProjectToLearn.application.Member.Command.Dto.MemberRequest;
+import crud.ProjectToLearn.application.Member.Command.Dto.MemberRequestUpdated;
+import crud.ProjectToLearn.application.Member.Command.MemberCommandService;
+import crud.ProjectToLearn.application.Member.Query.MemberQueryService;
 import crud.ProjectToLearn.domain.Entity.Member;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -19,12 +20,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberService MemberService;
+    private final MemberQueryService queryService;
+    private final MemberCommandService commandService;
 
     @Transactional
     @PostMapping
     public ResponseEntity saveMember(@RequestBody @Valid MemberRequest memberRequest, UriComponentsBuilder uriComponentsBuilder){
-        var Member = MemberService.saveMember(memberRequest);
+        var Member = commandService.saveMember(memberRequest);
         var uri = uriComponentsBuilder.path("/member/{id}").buildAndExpand(Member.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new MemberRequest(Member));
@@ -32,23 +34,23 @@ public class MemberController {
 
     @GetMapping
     public ResponseEntity<Page<Member>> findAllMember(@PageableDefault(size = 10, sort = {"name"}) Pageable pagination){
-        return ResponseEntity.ok(MemberService.findAllMember(pagination));
+        return ResponseEntity.ok(queryService.findAllMember(pagination));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Member> findById(@PathVariable Long id){
-        return ResponseEntity.ok(MemberService.getMemberById(id));
+        return ResponseEntity.ok(queryService.getMemberById(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteMemberByEmail(@PathVariable Long id){
-        MemberService.deleteById(id);
+        commandService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity updateMember(@PathVariable Long id, @RequestBody MemberRequestUpdated memberRequestUpdated){
-        return ResponseEntity.ok(MemberService.updateMember(id, memberRequestUpdated));
+        return ResponseEntity.ok(commandService.updateMember(id, memberRequestUpdated));
     }
 }
