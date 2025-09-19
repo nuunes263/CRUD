@@ -8,5 +8,5 @@ import org.mapstruct.*;
 public interface MemberMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateMemberFromDto(MemberRequestUpdated dto, @MappingTarget Member Entity);
+    void updateMemberFromDto(MemberRequestUpdated dto, @MappingTarget Member entity);
 }
