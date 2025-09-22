@@ -2,6 +2,7 @@ package crud.ProjectToLearn.application.Member.Query;
 
 import crud.ProjectToLearn.application.Helper.MemberMapper;
 import crud.ProjectToLearn.domain.Entity.Member;
+import crud.ProjectToLearn.domain.Exceptions.TypeException.MemberNotFoundException;
 import crud.ProjectToLearn.infrastructure.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,6 @@ public class MemberQueryService{
 
     public Member getMemberById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Member not found."));
+                .orElseThrow(MemberNotFoundException::new);
     }
 }

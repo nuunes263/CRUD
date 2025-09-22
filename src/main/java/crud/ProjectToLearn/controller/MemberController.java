@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,10 +27,10 @@ public class MemberController {
     @Transactional
     @PostMapping
     public ResponseEntity saveMember(@RequestBody @Valid MemberRequest memberRequest, UriComponentsBuilder uriComponentsBuilder){
-        var Member = commandService.saveMember(memberRequest);
-        var uri = uriComponentsBuilder.path("/member/{id}").buildAndExpand(Member.getId()).toUri();
+        var member = commandService.saveMember(memberRequest);
+        var uri = uriComponentsBuilder.path("/member/{id}").buildAndExpand(member.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(new MemberRequest(Member));
+        return ResponseEntity.created(uri).body(new MemberRequest(member));
     }
 
     @GetMapping

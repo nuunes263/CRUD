@@ -8,6 +8,8 @@ import org.hibernate.validator.constraints.br.CPF;
 import java.time.LocalDate;
 
 public record MemberRequest(
+        Long id,
+
         @NotBlank
         @Email
         String email,
@@ -32,6 +34,6 @@ public record MemberRequest(
 )
 {
     public MemberRequest(Member member){
-        this(member.getEmail(), member.getName(), member.getBirthDate(), member.getCpf(), member.getPlan(), member.getPhone());
+        this(member.getId(), member.getEmail(), member.getName(), member.getBirthDate(), member.getCpf(), member.getPlan(), member.getPhone());
     }
 }
