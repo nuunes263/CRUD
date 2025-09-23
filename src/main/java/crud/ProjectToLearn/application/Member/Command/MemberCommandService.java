@@ -17,7 +17,7 @@ public class MemberCommandService {
     private final MemberRepository repository;
     private final MemberMapper mapper;
 
-    public Member saveMember(MemberRequest memberRequest) {
+    public Member SaveMember(MemberRequest memberRequest) {
         if (emailAlreadyExist(memberRequest)) {
             throw new EmailAlreadyExistExeception();
         }
@@ -26,14 +26,14 @@ public class MemberCommandService {
         return repository.save(memberNew);
     }
 
-    public void deleteById(Long id) {
+    public void DeleteById(Long id) {
         var memberEntity = repository.findById(id)
                 .orElseThrow(MemberNotFoundException::new);
 
         repository.deleteById(id);
     }
 
-    public Member updateMember(Long id, MemberRequestUpdated memberRequestUpdated){
+    public Member UpdateMember(Long id, MemberRequestUpdated memberRequestUpdated){
         var memberEntity = repository.findById(id)
                 .orElseThrow(MemberNotFoundException::new);
 

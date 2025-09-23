@@ -5,6 +5,7 @@ import crud.ProjectToLearn.application.Member.Command.Dto.MemberRequestUpdated;
 import crud.ProjectToLearn.application.Member.Command.MemberCommandService;
 import crud.ProjectToLearn.application.Member.Query.MemberQueryService;
 import crud.ProjectToLearn.domain.Entity.Member;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping("member")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-key")
 public class MemberController {
 
     private final MemberQueryService queryService;
@@ -27,7 +29,7 @@ public class MemberController {
     @Transactional
     @PostMapping
     public ResponseEntity saveMember(@RequestBody @Valid MemberRequest memberRequest, UriComponentsBuilder uriComponentsBuilder){
-        var member = commandService.saveMember(memberRequest);
+        var member = commandService.SaveMember(memberRequest);
         var uri = uriComponentsBuilder.path("/member/{id}").buildAndExpand(member.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new MemberRequest(member));
@@ -45,13 +47,13 @@ public class MemberController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteMemberByEmail(@PathVariable Long id){
-        commandService.deleteById(id);
+        commandService.DeleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity updateMember(@PathVariable Long id, @RequestBody MemberRequestUpdated memberRequestUpdated){
-        return ResponseEntity.ok(commandService.updateMember(id, memberRequestUpdated));
+        return ResponseEntity.ok(commandService.UpdateMember(id, memberRequestUpdated));
     }
 }
