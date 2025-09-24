@@ -5,7 +5,7 @@ import crud.ProjectToLearn.application.Member.Command.Dto.MemberRequest;
 import crud.ProjectToLearn.application.Member.Command.Dto.MemberRequestUpdated;
 import crud.ProjectToLearn.domain.Entity.Member;
 import crud.ProjectToLearn.domain.Exceptions.TypeException.EmailAlreadyExistExeception;
-import crud.ProjectToLearn.domain.Exceptions.TypeException.MemberNotFoundException;
+import crud.ProjectToLearn.domain.Exceptions.TypeException.ProfileNotFoundException;
 import crud.ProjectToLearn.infrastructure.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,14 +28,14 @@ public class MemberCommandService {
 
     public void DeleteById(Long id) {
         var memberEntity = repository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(ProfileNotFoundException::new);
 
         repository.deleteById(id);
     }
 
     public Member UpdateMember(Long id, MemberRequestUpdated memberRequestUpdated){
         var memberEntity = repository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(ProfileNotFoundException::new);
 
         mapper.updateMemberFromDto(memberRequestUpdated, memberEntity);
         repository.saveAndFlush(memberEntity);
@@ -47,8 +47,16 @@ public class MemberCommandService {
                 memberEntity.getBirthDate(),
                 memberEntity.getPhone(),
                 memberEntity.getCpf(),
-                memberEntity.getPlan()
+                memberEntity.getPlan(),
+                memberEntity.getTeacher()
         );
+
+    }
+
+    public void RemoveTeacherFromMember(Long id_member){
+        var member = repository.findById(id_member)
+                .orElseThrow(ProfileNotFoundException::new);
+        member.setTeacher(null);
     }
 
     private boolean emailAlreadyExist(MemberRequest memberRequest) {

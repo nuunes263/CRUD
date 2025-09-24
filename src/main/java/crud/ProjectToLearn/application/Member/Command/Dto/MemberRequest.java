@@ -1,11 +1,13 @@
 package crud.ProjectToLearn.application.Member.Command.Dto;
 
 import crud.ProjectToLearn.domain.Entity.Member;
+import crud.ProjectToLearn.domain.Entity.Teacher;
 import crud.ProjectToLearn.domain.Enums.Plan;
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public record MemberRequest(
         Long id,
@@ -30,10 +32,12 @@ public record MemberRequest(
         Plan plan,
 
         @Pattern(regexp = "\\d{11}", message = "O telefone deve conter exatamente 11 dígitos, apenas números (DDD + número).")
-        String phone
+        String phone,
+
+        Teacher teacher
 )
 {
     public MemberRequest(Member member){
-        this(member.getId(), member.getEmail(), member.getName(), member.getBirthDate(), member.getCpf(), member.getPlan(), member.getPhone());
+        this(member.getId(), member.getEmail(), member.getName(), member.getBirthDate(), member.getCpf(), member.getPlan(), member.getPhone(), member.getTeacher());
     }
 }

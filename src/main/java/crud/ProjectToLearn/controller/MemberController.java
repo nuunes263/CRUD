@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -46,7 +45,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteMemberByEmail(@PathVariable Long id){
+    public ResponseEntity deleteMemberById(@PathVariable Long id){
         commandService.DeleteById(id);
         return ResponseEntity.noContent().build();
     }
@@ -55,5 +54,12 @@ public class MemberController {
     @PutMapping("/{id}")
     public ResponseEntity updateMember(@PathVariable Long id, @RequestBody MemberRequestUpdated memberRequestUpdated){
         return ResponseEntity.ok(commandService.UpdateMember(id, memberRequestUpdated));
+    }
+
+    @Transactional
+    @PatchMapping("/{id_member}")
+    public ResponseEntity removeTeacher(@PathVariable Long id_member){
+        commandService.RemoveTeacherFromMember(id_member);
+        return ResponseEntity.ok().build();
     }
 }

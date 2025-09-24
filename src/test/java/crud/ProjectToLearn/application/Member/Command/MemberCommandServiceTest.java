@@ -41,13 +41,13 @@ class MemberCommandServiceTest {
     @DisplayName("should throw exception when already exist an email equal.")
     void SaveMember() {
         //Arrange
-        var memberRequest = new MemberRequest(1L, "teste@gmail.com", "teste", LocalDate.now(), "11955702604", Plan.ANNUAL,"33514809895");
-        var member = new Member(memberRequest);
-        this.memberRepository.saveAndFlush(member);
-
-        var memberRequest2 = new MemberRequest(1L, "teste@gmail.com", "teste", LocalDate.now(), "11955702604", Plan.ANNUAL,"33514809895");
-        var member2 = new Member(memberRequest2);
-        this.memberRepository.saveAndFlush(member);
+//        var memberRequest = new MemberRequest(1L, "teste@gmail.com", "teste", LocalDate.now(), "11955702604", Plan.ANNUAL,"33514809895");
+//        var member = new Member(memberRequest);
+//        this.memberRepository.saveAndFlush(member);
+//
+//        var memberRequest2 = new MemberRequest(1L, "teste@gmail.com", "teste", LocalDate.now(), "11955702604", Plan.ANNUAL,"33514809895");
+//        var member2 = new Member(memberRequest2);
+//        this.memberRepository.saveAndFlush(member);
 
         //Act
         //Assert

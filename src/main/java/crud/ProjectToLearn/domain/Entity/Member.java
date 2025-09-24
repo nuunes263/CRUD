@@ -1,5 +1,6 @@
 package crud.ProjectToLearn.domain.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import crud.ProjectToLearn.application.Member.Command.Dto.MemberRequest;
 import crud.ProjectToLearn.domain.Enums.Plan;
 import jakarta.persistence.*;
@@ -7,14 +8,13 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Entity(name = "Member")
+@Entity(name = "member")
 @Table(name = "members")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(of = "id")
 public class Member {
 
     @Id
@@ -31,6 +31,12 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Plan plan;
 
+    @ManyToOne
+    @JoinColumn(name = "teacher_id", nullable = true)
+    @JsonBackReference
+    private Teacher teacher;
+
+
     public Member(MemberRequest memberRequest) {
         this.name = memberRequest.name();
         this.email = memberRequest.email();
@@ -38,5 +44,6 @@ public class Member {
         this.phone = memberRequest.phone();
         this.cpf = memberRequest.cpf();
         this.plan = memberRequest.plan();
+        this.teacher = memberRequest.teacher();
     }
 }

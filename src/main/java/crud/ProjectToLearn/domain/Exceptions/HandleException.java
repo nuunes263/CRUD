@@ -1,7 +1,7 @@
 package crud.ProjectToLearn.domain.Exceptions;
 
 import crud.ProjectToLearn.domain.Exceptions.TypeException.EmailAlreadyExistExeception;
-import crud.ProjectToLearn.domain.Exceptions.TypeException.MemberNotFoundException;
+import crud.ProjectToLearn.domain.Exceptions.TypeException.ProfileNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class HandleException {
 
-    @ExceptionHandler(MemberNotFoundException.class)
-    public ResponseEntity<RestErrorMessage> handleMemberNotFound(MemberNotFoundException ex){
+    @ExceptionHandler(ProfileNotFoundException.class)
+    public ResponseEntity<RestErrorMessage> handleMemberNotFound(ProfileNotFoundException ex){
         RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.NOT_FOUND, ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(threatResponse);
     }
