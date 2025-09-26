@@ -36,7 +36,7 @@ public class MemberController {
 
     @GetMapping
     public ResponseEntity<Page<Member>> findAllMember(@PageableDefault(size = 10, sort = {"name"}) Pageable pagination){
-        return ResponseEntity.ok(queryService.findAllMember(pagination));
+        return ResponseEntity.ok(queryService.findAllMembers(pagination));
     }
 
     @GetMapping("/{id}")

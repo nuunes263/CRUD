@@ -16,7 +16,7 @@ public class MemberQueryService{
     private final MemberRepository repository;
     private final MemberMapper mapper;
 
-    public Page<Member> findAllMember(Pageable pagination){
+    public Page<Member> findAllMembers(Pageable pagination){
         return repository.findAll(pagination);
     }
 
