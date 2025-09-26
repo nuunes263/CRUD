@@ -7,7 +7,6 @@ import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 public record MemberRequest(
         Long id,
