@@ -25,6 +25,7 @@ Sistema de gerenciamento de alunos e professores de academia desenvolvido com o 
 - **Spring Security** com JWT (Auth0 java-jwt 4.5.0)
 - **PostgreSQL** (Produção)
 - **H2 Database** (Desenvolvimento e Testes)
+- **Hibernate** - Persistência de dados
 - **Lombok** - Redução de boilerplate
 - **MapStruct 1.6.0** - Mapeamento de DTOs
 - **SpringDoc OpenAPI 2.8.13** - Documentação da API
@@ -243,3 +244,4 @@ Desenvolvido como projeto de estudo de Spring Boot e Java
 ---
 
 ⭐ Se este projeto te ajudou, considere dar uma estrela no repositório!
+
