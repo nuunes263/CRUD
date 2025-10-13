@@ -1,7 +1,9 @@
 package crud.ProjectToLearn.controller;
 
+import crud.ProjectToLearn.application.User.Dto.UserCreated;
 import crud.ProjectToLearn.application.User.Dto.UserData;
 import crud.ProjectToLearn.domain.Entity.User;
+import crud.ProjectToLearn.domain.Exceptions.TypeException.EmailAlreadyExistExeception;
 import crud.ProjectToLearn.infrastructure.repository.UserRepository;
 import crud.ProjectToLearn.infrastructure.security.Dto.DataTokenJWT;
 import crud.ProjectToLearn.infrastructure.security.TokenService;
@@ -40,15 +42,15 @@ public class UserAuthenticateController {
     public ResponseEntity register(@RequestBody @Valid UserData data){
         var user = repository.findByLogin(data.login());
 
-        if (user == null) {
-            var newUser = new User();
-            newUser.setLogin(data.login());
-            newUser.setPassword(passwordEncoder.encode(data.password()));
-            repository.save(newUser);
-
-            return ResponseEntity.ok().build();
+        if (user != null) {
+            throw new EmailAlreadyExistExeception();
         }
 
-        return ResponseEntity.badRequest().build();
+        var newUser = new User();
+        newUser.setLogin(data.login());
+        newUser.setPassword(passwordEncoder.encode(data.password()));
+        repository.save(newUser);
+
+        return ResponseEntity.ok(new UserCreated(data.login(), data.password()));
     }
 }
